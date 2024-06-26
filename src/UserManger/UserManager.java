@@ -155,7 +155,7 @@ public class UserManager {
             if(id==-1){
                 return;
             }
-            if(FindFreeDBID(id)){
+            if(FindBusyDBUid(id)!=-2){
                 break;
             }
             System.out.println("您想要查询的充电宝ID错误或者未被租借过，请重新输入(输入-1退出):");
