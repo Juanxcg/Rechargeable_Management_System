@@ -4,6 +4,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 单例模式下的数据库管理类，所有方法都放在这个类中
+ */
 public class DBConnection {
     // 单例实例，使用 volatile 保证可见性
     private static volatile DBConnection _instance;
@@ -143,7 +146,7 @@ public class DBConnection {
 
     //删除某一行
     public void DeleteRow(DBName tableName, int id) {
-        String sql = "DELETE FROM " + tableName.toString() + " WHERE id = "+ id ;
+        String sql = "DELETE FROM " + tableName.toString() + " WHERE Id = "+ id ;
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.executeUpdate();

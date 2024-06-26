@@ -6,6 +6,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Scanner;
 
+
+/**
+ * 用户交互的逻辑代码
+ */
 public class UserManager {
     // 单例实例，使用 volatile 保证可见性
     private static volatile UserManager _instance;
@@ -26,14 +30,14 @@ public class UserManager {
     }
     
     //空闲充电宝列表
-    List<DBInformation> freedbList;
+    List<DBInformation> freeRBList;
     
     Scanner scanner = new Scanner(System.in);
     
     //更新未被租借的充电宝，并且如果全都被租借出去了就返回false
     private boolean UpdateFreeDB(){
-        freedbList = DBConnection.Instance().GetFreeRB();
-        if(freedbList.size()!=0) {
+        freeRBList = DBConnection.Instance().GetFreeRB();
+        if(freeRBList.size()!=0) {
             return true;
         }
         else {
@@ -42,9 +46,9 @@ public class UserManager {
     }
     
     //找到某个id的充电宝是否被租借出去了，如果没有就返回true
-    private boolean FindFreeDBID(int id){
+    private boolean IsFreeDBID(int id){
         UpdateFreeDB();
-        for (DBInformation dbInformation : freedbList) {
+        for (DBInformation dbInformation : freeRBList) {
             if(dbInformation.id == id) {
                 return true;
             }
@@ -64,13 +68,15 @@ public class UserManager {
     
     //添加新的充电宝
     public void AddRB(){
+        DBInformation dbInformation = new DBInformation();
+        
         
     }
     
     //租借
     public void AddUser(){
         UpdateFreeDB();
-        for (DBInformation item : freedbList) {
+        for (DBInformation item : freeRBList) {
             System.out.printf("%-10d %-20s %-20s %-20f%n",item.id , item.name , item.acquisition_time , item.prices);
         }
         //判断是否还有充电宝
@@ -86,7 +92,7 @@ public class UserManager {
             if(id==-1){
                 return;
             }
-            if(FindFreeDBID(id)){
+            if(IsFreeDBID(id)){
                 break;
             }
             System.out.println("您想要的充电宝ID错误或者已被租用，请重新输入:");

@@ -1,5 +1,9 @@
 package DataManager;
 
+
+/**
+ * 用于数据库Users的实体数据存储
+ */
 public class DBUser{
     public int uid;
     public String uname;

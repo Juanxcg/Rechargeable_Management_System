@@ -1,5 +1,9 @@
 package DataManager;
 
+
+/**
+ * Information数据库的相关实体
+ */
 public class DBInformation{
     public int id;
     public String name;
