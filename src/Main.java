@@ -31,6 +31,12 @@ public class Main {
                 case 5:
                     UIManager.GetUsers();
                     break;
+                case 6:
+                    UIManager.AddRB();
+                    break;
+                case 7:
+                    UIManager.RemoveRB();
+                    break;
                 case 0:
                     exit = true;
                     break;

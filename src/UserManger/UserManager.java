@@ -34,18 +34,13 @@ public class UserManager {
     
     Scanner scanner = new Scanner(System.in);
     
-    //更新未被租借的充电宝，并且如果全都被租借出去了就返回false
+    //更新未被租借的充电宝，并且如果空闲列表为空就返回false
     private boolean UpdateFreeDB(){
         freeRBList = DBConnection.Instance().GetFreeRB();
-        if(freeRBList.size()!=0) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return !freeRBList.isEmpty();
     }
     
-    //找到某个id的充电宝是否被租借出去了，如果没有就返回true
+    //找到某个id的充电宝是不是在空闲列表中
     private boolean IsFreeDBID(int id){
         UpdateFreeDB();
         for (DBInformation dbInformation : freeRBList) {
@@ -68,9 +63,60 @@ public class UserManager {
     
     //添加新的充电宝
     public void AddRB(){
+        UpdateFreeDB();
         DBInformation dbInformation = new DBInformation();
+
+        //自动找到具体id
+        int id = 0;
+        while(true){
+            if(!IsFreeDBID(id)&&FindBusyDBUid(id)==-2){
+                break;
+            }
+            id++;
+        }
+        dbInformation.id = id;
+        System.out.println("请输入您要填的充电宝姓名(输入-1退出):");
         
+        if((dbInformation.name = scanner.nextLine())=="-1") {
+            return;
+        }
+        dbInformation.acquisition_time = LocalDateTime.now().toString();
         
+        System.out.println("请输入您要填的充电宝购入价格:");
+        dbInformation.prices = scanner.nextFloat();
+        
+        dbInformation.state = State.In;
+        
+        DBConnection.Instance().AddData(dbInformation);
+        
+        System.out.println("添加成功");
+    }
+    
+    //删除充电宝
+    public void RemoveRB(){
+        if(!UpdateFreeDB()){
+            System.out.println("充电宝已经全部被租用，无法删除。");
+            return;
+        }
+        
+        DBConnection.Instance().SeeDb(DBName.information);
+        
+        int id;
+        System.out.println("请输入您要删除的充电宝ID(输入-1退出):");
+        while(true){
+            id = scanner.nextInt();
+            scanner.nextLine();
+            if(id ==-1){
+                return;
+            }
+            if(IsFreeDBID(id)){
+                break;
+            }
+            System.out.println("您想要的充电宝ID错误或者已被租用，请重新输入(输入-1退出):");
+        }
+        
+        DBConnection.Instance().DeleteRow(DBName.information,id);
+        System.out.println("已删除");
     }
     
     //租借
@@ -95,7 +141,7 @@ public class UserManager {
             if(IsFreeDBID(id)){
                 break;
             }
-            System.out.println("您想要的充电宝ID错误或者已被租用，请重新输入:");
+            System.out.println("您想要的充电宝ID错误或者已被租用，请重新输入(输入-1退出):");
         }
         
         DBUser dbUser = new DBUser();

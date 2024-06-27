@@ -13,6 +13,8 @@ public class UIManager {
         System.out.println("3. 查询已租借充电宝");
         System.out.println("4. 查询充电宝列表");
         System.out.println("5. 查询租借充电宝列表");
+        System.out.println("6. 添加新的充电宝");
+        System.out.println("7. 删除一个充电宝");
         System.out.println("0. 退出");
     }
     
@@ -55,6 +57,18 @@ public class UIManager {
     public static void GetUsers(){
         UserManager.Instance().GetUsers();
 
+        GetMenuUI();
+    }
+    
+    public static void AddRB(){
+        UserManager.Instance().AddRB();
+        
+        GetMenuUI();
+    }
+    
+    public static void RemoveRB(){
+        UserManager.Instance().RemoveRB();
+        
         GetMenuUI();
     }
 }
