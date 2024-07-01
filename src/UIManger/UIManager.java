@@ -7,6 +7,7 @@ import UserManger.UserManager;
  */
 public class UIManager {
     public static void GetMenuUI(){
+        System.out.println("*********************");
         System.out.println("\n菜单:");
         System.out.println("1. 租借充电宝");
         System.out.println("2. 归还充电宝");
@@ -16,6 +17,7 @@ public class UIManager {
         System.out.println("6. 添加新的充电宝");
         System.out.println("7. 删除一个充电宝");
         System.out.println("0. 退出");
+        System.out.println("*********************");
     }
     
     //租用充电宝UI
@@ -60,12 +62,14 @@ public class UIManager {
         GetMenuUI();
     }
     
+    //添加新充电宝的ui
     public static void AddRB(){
         UserManager.Instance().AddRB();
         
         GetMenuUI();
     }
     
+    //删除某个充电宝的ui
     public static void RemoveRB(){
         UserManager.Instance().RemoveRB();
         

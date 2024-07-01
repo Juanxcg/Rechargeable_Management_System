@@ -11,8 +11,7 @@ public class DBUser{
     public String return_Time;
     public int id;
     
-    public DBUser(){
-    }
+    public DBUser(){}
     
     public DBUser(int uid,String uname,String borrowed_Time,String return_Time,int id){
         this.uid =uid;

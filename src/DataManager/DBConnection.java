@@ -93,6 +93,8 @@ public class DBConnection {
         }
     }
     
+    
+    //获取未被租用的充电宝ID列表
     public List<Integer> GetRBID(){
         String sql = "SELECT * FROM information where State = In";
 

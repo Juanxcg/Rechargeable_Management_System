@@ -5,9 +5,13 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args){
+        //打开数据库链接
         DBConnection.Instance().OpenConnection();
 
+        //初始化输入
         Scanner scanner = new Scanner(System.in);
+        
+        //开始执行程序
         boolean exit = false;
         
         UIManager.GetMenuUI();
@@ -44,6 +48,8 @@ public class Main {
                     System.out.println("无效的选择，请重新输入。");
             }
         }
+        
+        //关闭输入与数据库
         scanner.close();
         DBConnection.Instance().CloseDb();
     }

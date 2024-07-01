@@ -11,8 +11,7 @@ public class DBInformation{
     public float prices;
     public State state;
     
-    public DBInformation(){
-    }
+    public DBInformation(){}
     
     public DBInformation(int id,String name,String acquisition_time,float prices,State state){
         this.id = id;

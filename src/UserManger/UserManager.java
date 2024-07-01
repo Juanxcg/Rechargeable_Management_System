@@ -125,11 +125,13 @@ public class UserManager {
         for (DBInformation item : freeRBList) {
             System.out.printf("%-10d %-20s %-20s %-20f%n",item.id , item.name , item.acquisition_time , item.prices);
         }
+        
         //判断是否还有充电宝
         if(!UpdateFreeDB()){
             System.out.println("充电宝已经全部被租用，很抱歉。");
             return;
         }
+        
         int id;
         System.out.println("请输入您要租用的充电宝ID(输入-1退出):");
         while(true){
@@ -161,6 +163,8 @@ public class UserManager {
         System.out.println("租用成功!");
     }
     
+    
+    //返还充电宝
     public void BackRB(){
         //获取正确的id
         int id;
