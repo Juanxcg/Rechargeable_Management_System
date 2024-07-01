@@ -228,10 +228,12 @@ public class UserManager {
         System.out.println("查询成功");
     }
     
+    //获取全部充电宝信息
     public void GetRBI(){
         DBConnection.Instance().SeeDb(DBName.information);
     }
     
+    //获取全部租用者信息
     public void GetUsers(){
         DBConnection.Instance().SeeDb(DBName.users);
     }

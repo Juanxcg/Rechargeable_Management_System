@@ -6,9 +6,10 @@ import UserManger.UserManager;
  * 对于UI的管理
  */
 public class UIManager {
+    //获取主界面ui
     public static void GetMenuUI(){
         System.out.println("*********************");
-        System.out.println("\n菜单:");
+        System.out.println("菜单:");
         System.out.println("1. 租借充电宝");
         System.out.println("2. 归还充电宝");
         System.out.println("3. 查询已租借充电宝");
@@ -20,7 +21,7 @@ public class UIManager {
         System.out.println("*********************");
     }
     
-    //租用充电宝UI
+    //租用充电宝ui
     public static void GetFreeRBUI(){
         
         System.out.printf("%-10s %-20s %-20s %-20s%n","充电宝ID","充电宝名称","充电宝购入日期","充电宝购入价格");
