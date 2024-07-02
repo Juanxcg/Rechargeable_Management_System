@@ -1,13 +1,9 @@
-import DataManager.*;
 import UIManger.UIManager;
 
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args){
-        //打开数据库链接
-        DBConnection.Instance().OpenConnection();
-
         //初始化输入
         Scanner scanner = new Scanner(System.in);
         
@@ -51,6 +47,6 @@ public class Main {
         
         //关闭输入与数据库
         scanner.close();
-        DBConnection.Instance().CloseDb();
+        UIManager.CloseUI();
     }
 }

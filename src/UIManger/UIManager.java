@@ -76,4 +76,9 @@ public class UIManager {
         
         GetMenuUI();
     }
+    
+    //关闭ui
+    public static void CloseUI(){
+        UserManager.Instance().CloseSystem();
+    }
 }

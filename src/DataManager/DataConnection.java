@@ -7,19 +7,21 @@ import java.util.List;
 /**
  * 单例模式下的数据库管理类，所有方法都放在这个类中
  */
-public class DBConnection {
+public class DataConnection {
     // 单例实例，使用 volatile 保证可见性
-    private static volatile DBConnection _instance;
+    private static volatile DataConnection _instance;
 
     // 私有构造函数防止外部实例化
-    private DBConnection() {}
-
+    private DataConnection() {
+        OpenConnection();
+    }
+    
     // 提供公共的访问方法，双重检查锁定
-    public static DBConnection Instance() {
+    public static DataConnection Instance() {
         if (_instance == null) {
-            synchronized (DBConnection.class) {
+            synchronized (DataConnection.class) {
                 if (_instance == null) {
-                    _instance = new DBConnection();
+                    _instance = new DataConnection();
                 }
             }
         }
@@ -43,6 +45,84 @@ public class DBConnection {
             conn = DriverManager.getConnection(url, user, password);
         } catch (Exception e) {
             // 处理JDBC错误
+            e.printStackTrace();
+        }
+    }
+    
+    // 添加数据到信息表
+    public void AddData(DBInformation item) {
+        String sql = "INSERT INTO information (Id, Name, Acquisition_time, Prices, State) VALUES (?, ?, ?, ?, ?)";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, item.id);
+            pstmt.setString(2, item.name);
+            pstmt.setString(3, item.acquisition_time);
+            pstmt.setFloat(4, item.prices);
+            pstmt.setString(5, item.state.toString());
+
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // 添加数据到用户表
+    public void AddData(DBUser item) {
+        String sql = "INSERT INTO users (School_Id, Username, Borrowed_Time, Return_Time, Id) VALUES (?, ?, ?, ?, ?)";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, item.uid);
+            pstmt.setString(2, item.uname);
+            pstmt.setString(3, item.borrowed_Time);
+            pstmt.setString(4, item.return_Time);
+            pstmt.setInt(5, item.id);
+
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //删除某一行
+    public void DeleteRow(DBName tableName, int id) {
+        String sql = "DELETE FROM " + tableName.toString() + " WHERE Id = "+ id ;
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // 清空指定表的数据
+    public void ClearTable(DBName dbName) {
+        String sql = "TRUNCATE TABLE " + dbName.toString();
+
+        try (Statement stmt = conn.createStatement()) {
+            stmt.executeUpdate(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    //更新状态
+    public void UpdateState(int id,State state){
+        String sql = "UPDATE information SET State = '" + state + "' WHERE ID = " + id;
+        
+        try(Statement stmt = conn.createStatement()) {
+            stmt.executeUpdate(sql);
+        }catch(SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    //更新归还时间
+    public void UpdateTime(String uid,String return_Time){
+        String sql = "UPDATE users SET Return_Time = '" + return_Time + "' WHERE School_Id = " + uid;
+
+        try(Statement stmt = conn.createStatement()) {
+            stmt.executeUpdate(sql);
+        }catch(SQLException e) {
             e.printStackTrace();
         }
     }
@@ -92,11 +172,10 @@ public class DBConnection {
             e.printStackTrace();
         }
     }
-    
-    
-    //获取未被租用的充电宝ID列表
+
+    //获取全部的充电宝ID列表
     public List<Integer> GetRBID(){
-        String sql = "SELECT * FROM information where State = In";
+        String sql = "SELECT * FROM information";
 
         List<Integer> DBid = new ArrayList<>();
 
@@ -110,84 +189,6 @@ public class DBConnection {
             e.printStackTrace();
         }
         return DBid;
-    }
-
-    // 添加数据到信息表
-    public void AddData(DBInformation item) {
-        String sql = "INSERT INTO information (Id, Name, Acquisition_time, Prices, State) VALUES (?, ?, ?, ?, ?)";
-
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, item.id);
-            pstmt.setString(2, item.name);
-            pstmt.setString(3, item.acquisition_time);
-            pstmt.setFloat(4, item.prices);
-            pstmt.setString(5, item.state.toString());
-
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    // 添加数据到用户表
-    public void AddData(DBUser item) {
-        String sql = "INSERT INTO users (School_Id, Username, Borrowed_Time, Return_Time, Id) VALUES (?, ?, ?, ?, ?)";
-
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, item.uid);
-            pstmt.setString(2, item.uname);
-            pstmt.setString(3, item.borrowed_Time);
-            pstmt.setString(4, item.return_Time);
-            pstmt.setInt(5, item.id);
-
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    //删除某一行
-    public void DeleteRow(DBName tableName, int id) {
-        String sql = "DELETE FROM " + tableName.toString() + " WHERE Id = "+ id ;
-
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    // 清空指定表的数据
-    public void ClearTable(DBName dbName) {
-        String sql = "TRUNCATE TABLE " + dbName.toString();
-
-        try (Statement stmt = conn.createStatement()) {
-            stmt.executeUpdate(sql);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-    
-    //更新状态
-    public void UpdateState(int id,State state){
-        String sql = "UPDATE information SET State = '" + state + "' WHERE ID = " + id;
-        
-        try(Statement stmt = conn.createStatement()) {
-            stmt.executeUpdate(sql);
-        }catch(SQLException e) {
-            e.printStackTrace();
-        }
-    }
-    
-    //更新归还时间
-    public void UpdateTime(int uid,String return_Time){
-        String sql = "UPDATE users SET Return_Time = '" + return_Time + "' WHERE School_Id = " + uid;
-
-        try(Statement stmt = conn.createStatement()) {
-            stmt.executeUpdate(sql);
-        }catch(SQLException e) {
-            e.printStackTrace();
-        }
     }
     
     //获取未被租用的全部充电宝
@@ -222,7 +223,7 @@ public class DBConnection {
             pstmt.setInt(1, id);
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
-                    int sid = rs.getInt("School_Id");
+                    String sid = rs.getString("School_Id");
                     String uname = rs.getString("Username");
                     String borrowed_time = rs.getString("Borrowed_Time");
                     String return_time = rs.getString("Return_Time");
