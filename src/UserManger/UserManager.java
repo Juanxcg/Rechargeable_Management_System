@@ -4,6 +4,7 @@ import DataManager.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 
@@ -68,16 +69,13 @@ public class UserManager {
 
         //自动找到具体id
         int id = 0;
-        while(true){
-            if(!DataConnection.Instance().GetRBID().contains(id)){
-                break;
-            }
+        while (DataConnection.Instance().GetRBID().contains(id)) {
             id++;
         }
         dbInformation.id = id;
         System.out.println("请输入您要填的充电宝姓名(输入-1退出):");
         
-        if((dbInformation.name = scanner.nextLine())=="-1") {
+        if((dbInformation.name = scanner.nextLine()).equals("-1")) {
             return;
         }
         dbInformation.acquisition_time = LocalDateTime.now().toString();
@@ -184,10 +182,10 @@ public class UserManager {
         System.out.println("请输入您的学号(输入-1退出): ");
         while(true){
             uid = scanner.nextLine();
-            if(uid=="-1"){
+            if(uid.equals("-1")){
                 return;
             }
-            if(FindBusyDBUid(id)==uid){
+            if(Objects.equals(FindBusyDBUid(id), uid)){
                 break;
             }
             System.out.println("学号输入错误，请重新输入(输入-1退出):");
@@ -220,7 +218,7 @@ public class UserManager {
         System.out.printf("%-10s %-20s %-20s %-20s %-10s%n","学号","姓名","租借充电宝日期","归还充电宝日期","充电宝id");
         
         for(DBUser dbUser : users) {
-            System.out.printf("%-10d %-20s %-20s %-20s %-10d%n",dbUser.uid,dbUser.uname,dbUser.borrowed_Time,dbUser.return_Time,dbUser.id);
+            System.out.printf("%-10s %-20s %-20s %-20s %-10d%n",dbUser.uid,dbUser.uname,dbUser.borrowed_Time,dbUser.return_Time,dbUser.id);
         }
         
         System.out.println("查询成功");

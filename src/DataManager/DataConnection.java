@@ -166,7 +166,6 @@ public class DataConnection {
                     }
                     break;
                 default:
-                    return;
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -204,7 +203,6 @@ public class DataConnection {
                 String name = rs.getString("Name");
                 String buy_time = rs.getString("Acquisition_time");
                 float prices = rs.getFloat("Prices");
-                String state = rs.getString("State");
                 freeDB.add(new DBInformation(id,name,buy_time,prices,State.In));
             }
         }catch (SQLException e) {
