@@ -1,5 +1,7 @@
-package DataManager;
+package Entities;
 
+
+import Enums.State;
 
 /**
  * Information数据库的相关实体

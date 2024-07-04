@@ -1,4 +1,4 @@
-package DataManager;
+package Enums;
 
 /**
  * 数据库姓名的枚举类型

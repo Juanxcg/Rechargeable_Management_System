@@ -1,6 +1,10 @@
 package UserManger;
 
 import DataManager.*;
+import Entities.DBInformation;
+import Entities.DBUser;
+import Enums.DBName;
+import Enums.State;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -11,7 +15,9 @@ import java.util.Scanner;
 /**
  * 用户交互的逻辑代码
  */
-public class UserManager {
+public class UserManager implements UserM {
+    private DataC dataConnection = DataConnection.Instance();
+    
     // 单例实例，使用 volatile 保证可见性
     private static volatile UserManager _instance;
 
@@ -37,7 +43,7 @@ public class UserManager {
     
     //更新未被租借的充电宝，并且如果空闲列表为空就返回false
     private boolean UpdateFreeDB(){
-        freeRBList = DataConnection.Instance().GetFreeRB();
+        freeRBList = dataConnection.GetFreeRB();
         return !freeRBList.isEmpty();
     }
     
@@ -54,7 +60,7 @@ public class UserManager {
     
     //找出还在租用id充电宝的人
     private String FindBusyDBUid(int id){
-        for(DBUser dbUser : DataConnection.Instance().GetUser(id)){
+        for(DBUser dbUser : dataConnection.GetUser(id)){
             if(dbUser.return_Time == null) {
                 return dbUser.uid;
             }
@@ -69,7 +75,7 @@ public class UserManager {
 
         //自动找到具体id
         int id = 0;
-        while (DataConnection.Instance().GetRBID().contains(id)) {
+        while (dataConnection.GetRBID().contains(id)) {
             id++;
         }
         dbInformation.id = id;
@@ -85,7 +91,7 @@ public class UserManager {
         
         dbInformation.state = State.In;
         
-        DataConnection.Instance().AddData(dbInformation);
+        dataConnection.AddData(dbInformation);
         
         System.out.println("添加成功");
     }
@@ -97,7 +103,7 @@ public class UserManager {
             return;
         }
         
-        DataConnection.Instance().SeeDb(DBName.information);
+        dataConnection.SeeDb(DBName.information);
         
         int id;
         System.out.println("请输入您要删除的充电宝ID(输入-1退出):");
@@ -113,7 +119,7 @@ public class UserManager {
             System.out.println("您想要的充电宝ID错误或者已被租用，请重新输入(输入-1退出):");
         }
         
-        DataConnection.Instance().DeleteRow(DBName.information,id);
+        dataConnection.DeleteRow(DBName.information,id);
         System.out.println("已删除");
     }
     
@@ -154,8 +160,8 @@ public class UserManager {
         dbUser.uname = scanner.nextLine();
         dbUser.borrowed_Time = LocalDateTime.now().toString();
         
-        DataConnection.Instance().UpdateState(id, State.Out);
-        DataConnection.Instance().AddData(dbUser);
+        dataConnection.UpdateState(id, State.Out);
+        dataConnection.AddData(dbUser);
         
         System.out.println("租用成功!");
     }
@@ -191,8 +197,8 @@ public class UserManager {
             System.out.println("学号输入错误，请重新输入(输入-1退出):");
         }
         
-        DataConnection.Instance().UpdateTime(uid,LocalDateTime.now().toString());
-        DataConnection.Instance().UpdateState(id,State.In);
+        dataConnection.UpdateTime(uid,LocalDateTime.now().toString());
+        dataConnection.UpdateState(id,State.In);
         
         System.out.println("归还成功");
     }
@@ -213,7 +219,7 @@ public class UserManager {
             System.out.println("您想要查询的充电宝ID错误或者未被租借过，请重新输入(输入-1退出):");
         }
         
-        List<DBUser> users = DataConnection.Instance().GetUser(id);
+        List<DBUser> users = dataConnection.GetUser(id);
 
         System.out.printf("%-10s %-20s %-20s %-20s %-10s%n","学号","姓名","租借充电宝日期","归还充电宝日期","充电宝id");
         
@@ -226,16 +232,16 @@ public class UserManager {
     
     //获取全部充电宝信息
     public void GetRBI(){
-        DataConnection.Instance().SeeDb(DBName.information);
+        dataConnection.SeeDb(DBName.information);
     }
     
     //获取全部租用者信息
     public void GetUsers(){
-        DataConnection.Instance().SeeDb(DBName.users);
+        dataConnection.SeeDb(DBName.users);
     }
     
     //关闭系统
     public void CloseSystem(){
-        DataConnection.Instance().CloseDb();
+        dataConnection.CloseDb();
     }
 }

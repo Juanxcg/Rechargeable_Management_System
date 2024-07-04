@@ -1,11 +1,14 @@
 package UIManger;
 
+import UserManger.UserM;
 import UserManger.UserManager;
 
 /**
  * 对于UI的管理
  */
 public class UIManager {
+    private static UserM userManager = UserManager.Instance();
+    
     //获取主界面ui
     public static void GetMenuUI(){
         System.out.println("*********************");
@@ -26,7 +29,7 @@ public class UIManager {
         
         System.out.printf("%-10s %-20s %-20s %-20s%n","充电宝ID","充电宝名称","充电宝购入日期","充电宝购入价格");
         
-        UserManager.Instance().AddUser();
+        userManager.AddUser();
         
         GetMenuUI();
     }
@@ -34,8 +37,8 @@ public class UIManager {
     //归还充电宝ui
     public static void GetBackRBUI(){
         System.out.println("请输入您要归还的充电宝ID(按-1退出): ");
-        
-        UserManager.Instance().BackRB();
+
+        userManager.BackRB();
         
         GetMenuUI();
     }
@@ -43,42 +46,42 @@ public class UIManager {
     //查询租用充电宝的ui
     public static void GetBusyRBUI(){
         System.out.println("请输入您要查询的充电宝ID(按-1退出): ");
-        
-        UserManager.Instance().GetBusyRB();
+
+        userManager.GetBusyRB();
         
         GetMenuUI();
     }
     
     //查询所有充电宝的ui
     public static void GetRBI(){
-        UserManager.Instance().GetRBI();
+        userManager.GetRBI();
         
         GetMenuUI();
     }
     
     //查询所有租用历史的ui
     public static void GetUsers(){
-        UserManager.Instance().GetUsers();
+        userManager.GetUsers();
 
         GetMenuUI();
     }
     
     //添加新充电宝的ui
     public static void AddRB(){
-        UserManager.Instance().AddRB();
+        userManager.AddRB();
         
         GetMenuUI();
     }
     
     //删除某个充电宝的ui
     public static void RemoveRB(){
-        UserManager.Instance().RemoveRB();
+        userManager.RemoveRB();
         
         GetMenuUI();
     }
     
     //关闭ui
     public static void CloseUI(){
-        UserManager.Instance().CloseSystem();
+        userManager.CloseSystem();
     }
 }

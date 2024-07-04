@@ -1,13 +1,19 @@
 package DataManager;
 
+import Entities.DBInformation;
+import Entities.DBUser;
+import Enums.DBName;
+import Enums.State;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * 单例模式下的数据库管理类，所有方法都放在这个类中
  */
-public class DataConnection {
+public class DataConnection implements DataC {
     // 单例实例，使用 volatile 保证可见性
     private static volatile DataConnection _instance;
 
@@ -106,7 +112,7 @@ public class DataConnection {
     }
     
     //更新状态
-    public void UpdateState(int id,State state){
+    public void UpdateState(int id, State state){
         String sql = "UPDATE information SET State = '" + state + "' WHERE ID = " + id;
         
         try(Statement stmt = conn.createStatement()) {
