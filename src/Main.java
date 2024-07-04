@@ -10,6 +10,7 @@ public class Main {
         //开始执行程序
         boolean exit = false;
         
+        
         UIManager.GetMenuUI();
         while(!exit){
             int choice = scanner.nextInt();

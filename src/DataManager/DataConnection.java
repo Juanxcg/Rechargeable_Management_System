@@ -158,7 +158,7 @@ public class DataConnection implements DataC {
                     break;
                 case users:
                     while (rs.next()) {
-                        int sid = rs.getInt("School_Id");
+                        String sid = rs.getString("School_Id");
                         String uname = rs.getString("Username");
                         String borrowed_time = rs.getString("Borrowed_Time");
                         String return_time = rs.getString("Return_Time");
