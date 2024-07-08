@@ -123,8 +123,8 @@ public class DataConnection implements DataC {
     }
     
     //更新归还时间
-    public void UpdateTime(String uid,String return_Time){
-        String sql = "UPDATE users SET Return_Time = '" + return_Time + "' WHERE School_Id = " + uid;
+    public void UpdateTime(int id,String return_Time){
+        String sql = "UPDATE users SET Return_Time = '" + return_Time + "' WHERE Id = " + id;
 
         try(Statement stmt = conn.createStatement()) {
             stmt.executeUpdate(sql);

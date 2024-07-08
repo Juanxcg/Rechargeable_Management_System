@@ -22,7 +22,7 @@ public interface DataC {
     
     //改
     public void UpdateState(int id, State state);
-    public void UpdateTime(String uid,String return_Time);
+    public void UpdateTime(int id,String return_Time);
     
     //查
     public void SeeDb(DBName dbName);

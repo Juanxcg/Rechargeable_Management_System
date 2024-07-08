@@ -154,7 +154,8 @@ public class UserManager implements UserM {
         
         dbUser.id=id;
         System.out.println("请输入您的学号:");
-        dbUser.uid = scanner.nextLine();
+        String uid = scanner.nextLine();
+        
         
         System.out.println("请输入你的名字:");
         dbUser.uname = scanner.nextLine();
@@ -197,7 +198,7 @@ public class UserManager implements UserM {
             System.out.println("学号输入错误，请重新输入(输入-1退出):");
         }
         
-        dataConnection.UpdateTime(uid,LocalDateTime.now().toString());
+        dataConnection.UpdateTime(id,LocalDateTime.now().toString());
         dataConnection.UpdateState(id,State.In);
         
         System.out.println("归还成功");
