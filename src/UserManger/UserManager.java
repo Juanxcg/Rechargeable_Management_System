@@ -155,7 +155,7 @@ public class UserManager implements UserM {
         dbUser.id=id;
         System.out.println("请输入您的学号:");
         String uid = scanner.nextLine();
-        
+        dbUser.uid = uid;
         
         System.out.println("请输入你的名字:");
         dbUser.uname = scanner.nextLine();

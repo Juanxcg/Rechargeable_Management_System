@@ -1,5 +1,3 @@
-import DataManager.DataConnection;
-import Enums.State;
 import UIManger.UIManager;
 
 import java.util.Scanner;
@@ -11,7 +9,6 @@ public class Main {
         
         //开始执行程序
         boolean exit = false;
-        
         
         UIManager.GetMenuUI();
         while(!exit){
